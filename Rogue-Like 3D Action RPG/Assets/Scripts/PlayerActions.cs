@@ -27,16 +27,14 @@ public class PlayerActions : MonoBehaviour {
 		//Check for Ground
 		RaycastHit groundHit;
 		Physics.Raycast(transform.position, Vector3.down, out groundHit, 1.2f);
-		grounded = System.Convert.ToInt32(groundHit.collider != null);
+		grounded = System.Convert.ToInt32(groundHit.collider == null);
 		
 		switch (grounded) {
 			case 0 :
-				Air ();
-				break;
-			case 1 :
 				Ground (groundHit.point);
 				break;
 			default :
+				Air ();
 				break;
 		};
 		
@@ -69,8 +67,8 @@ public class PlayerActions : MonoBehaviour {
 		//Set rb Constraints
 		rb.constraints = RigidbodyConstraints.FreezeRotation;
 		//Set Collider Size
-		ccol.center = Vector3.zero;
-		ccol.height = 2;
+		ccol.center = Vector3.up*0.125f;
+		ccol.height = 1.75f;
 		
 		//Move
 		Vector3 vel = Vector3.ClampMagnitude(((cam.right*Input.GetAxis("Horizontal")) + (new Vector3(cam.forward.x, 0, cam.forward.z)*Input.GetAxis("Vertical")))*maxSpeed, maxSpeed);
