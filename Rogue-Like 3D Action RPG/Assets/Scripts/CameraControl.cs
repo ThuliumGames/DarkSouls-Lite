@@ -4,34 +4,62 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour {
 	
-	public Transform objToFollow;
+	public Transform objToFollow, cam;
 	
-	public float maxDistance;
+	public float lerp, offset, rotSpeed, maxDistance;
 	
 	public LayerMask lm;
 	
 	float ang;
 	
-	void LateUpdate () {
+	Vector3 prevLoc, vector;
+	
+	void FixedUpdate () {
 		if (objToFollow==null) return;
 		
-		transform.RotateAround(objToFollow.position, transform.right, -ang);
+		//Delay movement to smooth out jagged movement
+		vector = Vector3.Lerp(vector, (prevLoc-objToFollow.position)*offset/60.0f, lerp/60.0f);
 		
-		transform.position = new Vector3 (objToFollow.position.x, Mathf.Lerp(transform.position.y, objToFollow.position.y, 10*Time.deltaTime), objToFollow.position.z);
+		//Undo Rotation
+		transform.RotateAround(objToFollow.position+vector, transform.right, -ang);
 		
-		ang = Mathf.Clamp(ang-Input.GetAxis("Mouse Y"), -89, 89);
+		//Move to follow location
+		transform.position = objToFollow.position+vector;
 		
+		//Set up down angle
+		ang = Mathf.Clamp(ang-Input.GetAxis("Mouse Y")*rotSpeed/60.0f, -89, 89);
 		transform.eulerAngles = new Vector3(ang, transform.eulerAngles.y, 0);
-		transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X"));
 		
+		//Set Left Right angle
+		transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X")*rotSpeed/60.0f);
+		
+		//Test for wall
 		RaycastHit h;
 		Physics.Raycast(transform.position, -transform.forward, out h, maxDistance, lm);
 		
 		if (h.collider != null) {
+			//Move out of wall
 			transform.Translate(0, 0, -h.distance);
-			//transform.Translate(h.normal*0.1f);
+			
+			//Make sure camera isnt in wal
+			RaycastHit h2;
+			Physics.Raycast(transform.position, h.normal, out h2, 0.3f, lm);
+			
+			cam.position = transform.position;
+			
+			if (h2.collider != null) {
+				cam.Translate(h.normal*(h2.distance*0.5f));
+			} else {
+				cam.Translate(h.normal*0.3f);
+			}
 		} else {
+			//reset position if not in wall
 			transform.Translate(0, 0, -maxDistance);
+			cam.position = transform.position;
 		}
+		
+		cam.eulerAngles = transform.eulerAngles;
+		
+		prevLoc = objToFollow.position;
 	}
 }
