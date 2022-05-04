@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour {
 	
-	public Transform objToFollow, cam;
+	public Transform objToFollow, target, cam;
 	
 	public float lerp, offset, rotSpeed, maxDistance;
 	
@@ -17,14 +17,22 @@ public class CameraControl : MonoBehaviour {
 	void FixedUpdate () {
 		if (objToFollow==null) return;
 		
+		Vector3 point = objToFollow.position;
+		
+		if (target!=null) {
+			//point = (target.position+objToFollow.position)/2.0f;
+			transform.LookAt(target.position);
+		}
+		
+		
 		//Delay movement to smooth out jagged movement
-		vector = Vector3.Lerp(vector, (prevLoc-objToFollow.position)*offset/60.0f, lerp/60.0f);
+		vector = Vector3.Lerp(vector, (prevLoc-point)*offset/60.0f, lerp/60.0f);
 		
 		//Undo Rotation
-		transform.RotateAround(objToFollow.position+vector, transform.right, -ang);
+		transform.RotateAround(point+vector, transform.right, -ang);
 		
 		//Move to follow location
-		transform.position = objToFollow.position+vector;
+		transform.position = point+vector;
 		
 		//Set up down angle
 		ang = Mathf.Clamp(ang-Input.GetAxis("Mouse Y")*rotSpeed/60.0f, -89, 89);
@@ -60,6 +68,6 @@ public class CameraControl : MonoBehaviour {
 		
 		cam.eulerAngles = transform.eulerAngles;
 		
-		prevLoc = objToFollow.position;
+		prevLoc = point;
 	}
 }
