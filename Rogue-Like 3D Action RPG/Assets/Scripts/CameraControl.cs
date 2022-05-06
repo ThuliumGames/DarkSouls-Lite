@@ -17,11 +17,11 @@ public class CameraControl : MonoBehaviour {
 	void FixedUpdate () {
 		if (objToFollow==null) return;
 		
-		Vector3 point = objToFollow.position;
+		Vector3 point = objToFollow.position+Vector3.up;
 		
 		if (target!=null) {
 			//point = (target.position+objToFollow.position)/2.0f;
-			transform.LookAt(target.position);
+			transform.LookAt(target.position+Vector3.up);
 		}
 		
 		

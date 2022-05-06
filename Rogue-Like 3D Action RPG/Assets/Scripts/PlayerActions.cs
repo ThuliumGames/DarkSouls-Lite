@@ -14,7 +14,9 @@ public class PlayerActions : MonoBehaviour {
 	//Stats
 	public float g_maxSpeed, a_maxSpeed, g_acceleration, a_acceleration, jumpHeight, rotationSpeed;
 	
-	float maxUp, jump, dodge, light, heavy, special;
+	float maxUp, jump, dodge, a1, a2, a3, special;
+	
+	int currentMove = 1;
 	
 	Transform cam;
 	
@@ -43,7 +45,7 @@ public class PlayerActions : MonoBehaviour {
 		
 		//Check for Ground
 		RaycastHit groundHit;
-		Physics.SphereCast(transform.position, 0.2f, Vector3.down, out groundHit, 1f);
+		Physics.SphereCast(transform.position+Vector3.up, 0.2f, Vector3.down, out groundHit, 1.25f);
 		
 		//Actions **This will be replaced with triggers from the *NEW* input system
 		if (Input.GetButtonDown("Jump")) {
@@ -52,11 +54,18 @@ public class PlayerActions : MonoBehaviour {
 		if (Input.GetButtonDown("Dodge")) {
 			dodge = 0.375f;
 		}
-		if (Input.GetButtonDown("LightAttack")) {
-			light = 0.375f;
+		
+		if (Input.GetButtonDown("Attack" + currentMove)) {
+			a1 = 0.375f;
 		}
-		if (Input.GetButtonDown("HeavyAttack")) {
-			heavy = 0.375f;
+		
+		if (currentMove == 1) {
+			if (Input.GetButtonDown("Attack2")) {
+				a2 = 0.375f;
+			}
+			if (Input.GetButtonDown("Attack3")) {
+				a3 = 0.375f;
+			}
 		}
 		if (Input.GetButtonDown("Special")) {
 			special = 0.375f;
@@ -65,15 +74,16 @@ public class PlayerActions : MonoBehaviour {
 		if (!anim.IsInTransition(0)) {
 			anim.SetBool("Dodge", dodge>0);
 			anim.SetBool("Jump", jump>0);
-			anim.SetBool("LightAttack", light>0);
-			anim.SetBool("HeavyAttack", heavy>0);
+			anim.SetBool("Attack1", a1>0);
+			anim.SetBool("Attack2", a2>0);
+			anim.SetBool("Attack3", a3>0);
 			anim.SetBool("Special", special>0);
 		}
 		
 		if (!anim.IsInTransition(0)) {
 			dodge =	Mathf.Clamp01(dodge-Time.deltaTime);
-			light =	Mathf.Clamp01(light-Time.deltaTime);
-			heavy = Mathf.Clamp01(heavy-Time.deltaTime);
+			a1 =	Mathf.Clamp01(a1-Time.deltaTime);
+			a2 = Mathf.Clamp01(a2-Time.deltaTime);
 			special = Mathf.Clamp01(special-Time.deltaTime);
 			jump = Mathf.Clamp01(jump-Time.deltaTime);
 		}
@@ -137,12 +147,13 @@ public class PlayerActions : MonoBehaviour {
 		
 		//Set rb Constraints
 		rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-		//Stick To Ground
-		transform.position = new Vector3(transform.position.x, groundPoint.point.y, transform.position.z) + (Vector3.up*0.75f);
 		
 		//Change Speed With Surface Normal
-		RaycastHit surNor;
-		Physics.Raycast(new Vector3(groundPoint.point.x, transform.position.y, groundPoint.point.z), Vector3.down, out surNor, 2);
+		
+		float slope = (1-groundPoint.normal.y);
+		
+		//Stick To Ground
+		transform.position = new Vector3(transform.position.x, groundPoint.point.y, transform.position.z)-(Vector3.up*slope);
 		//Move
 		rb.velocity = Vector3.Lerp(rb.velocity, Vector3.ClampMagnitude(((cam.right*Input.GetAxis("Horizontal")) + (new Vector3(cam.forward.x, 0, cam.forward.z).normalized*Input.GetAxis("Vertical")))*g_maxSpeed, g_maxSpeed), g_acceleration*Time.deltaTime);
 		maxUp = rb.velocity.y;
@@ -174,8 +185,12 @@ public class PlayerActions : MonoBehaviour {
 				anim.SetBool("OnGround", true);
 			}
 				
+			//Change Speed With Surface Normal
+			
+			float slope = (1-groundPoint.normal.y);
+			
 			//Stick To Ground
-			transform.position = new Vector3(transform.position.x, groundPoint.point.y, transform.position.z) + (Vector3.up*0.75f);
+			transform.position = new Vector3(transform.position.x, groundPoint.point.y, transform.position.z)-(Vector3.up*slope);
 			maxUp = rb.velocity.y;
 		} else {
 			anim.SetBool("OnGround", false);
@@ -193,12 +208,15 @@ public class PlayerActions : MonoBehaviour {
 				dodge = 0;
 				break;
 			case 2:
-				light = 0;
+				a1 = 0;
 				break;
 			case 3:
-				heavy = 0;
+				a2 = 0;
 				break;
 			case 4:
+				a3 = 0;
+				break;
+			case 5:
 				special = 0;
 				break;
 			default:
@@ -217,16 +235,25 @@ public class PlayerActions : MonoBehaviour {
 	}
 	
 	void Return () {
+		currentMove = 1;
 		anim.runtimeAnimatorController = av[0];
 	}
 	
-	void LightAttack (string StartingAnim) {
+	void Attack1 (string StartingAnim) {
+		currentMove = 1;
 		anim.runtimeAnimatorController = av[1];
 		anim.Play(StartingAnim);
 	}
 	
-	void HeavyAttack (string StartingAnim) {
+	void Attack2 (string StartingAnim) {
+		currentMove = 2;
 		anim.runtimeAnimatorController = av[2];
+		anim.Play(StartingAnim);
+	}
+	
+	void Attack3 (string StartingAnim) {
+		currentMove = 3;
+		anim.runtimeAnimatorController = av[3];
 		anim.Play(StartingAnim);
 	}
 }
