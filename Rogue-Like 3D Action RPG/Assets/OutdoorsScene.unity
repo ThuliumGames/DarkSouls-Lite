@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.0078, g: 2263.7617, b: 3286.5664, a: 1}
+  m_IndirectSpecularColor: {r: 2159.3525, g: 2264.8965, b: 3292.5195, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -637,6 +637,12 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!4 &256811207 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1546309143259076310, guid: 8283634ef10570d49bf64ad442d8fcb0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1587092870}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &303251176
 GameObject:
   m_ObjectHideFlags: 0
@@ -3207,6 +3213,89 @@ Transform:
   m_Father: {fileID: 1011687903}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -36.168, z: 0}
+--- !u!1 &1518383242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518383243}
+  - component: {fileID: 1518383245}
+  - component: {fileID: 1518383244}
+  m_Layer: 6
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1518383243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518383242}
+  m_LocalRotation: {x: -0.04062103, y: 0.029474573, z: -0.58654505, w: 0.80836016}
+  m_LocalPosition: {x: 0.00013, y: 0.00005, z: 0.00412}
+  m_LocalScale: {x: 0.00096801866, y: 0.00017569434, z: 0.011741304}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 256811207}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -1.782, y: 5.471, z: -72.014}
+--- !u!23 &1518383244
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518383242}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1518383245
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518383242}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1553245481
 GameObject:
   m_ObjectHideFlags: 0
@@ -3744,7 +3833,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 0eef59367247bdd47b8c95ee9d426dc1, type: 2}
+      objectReference: {fileID: 9100000, guid: aac4e3e64eb41a24b98771ca69473489, type: 2}
     - target: {fileID: 5866666021909216657, guid: 8283634ef10570d49bf64ad442d8fcb0,
         type: 3}
       propertyPath: m_ApplyRootMotion
@@ -3825,17 +3914,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14111eff8cd9e084b9451386e8874462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  g_maxSpeed: 7
-  a_maxSpeed: 9
+  g_maxSpeed: 14
+  a_maxSpeed: 18
   g_acceleration: 12
   a_acceleration: 2
-  jumpHeight: 10
+  jumpHeight: 20
   rotationSpeed: 0
   av:
   - {fileID: 9100000, guid: 0eef59367247bdd47b8c95ee9d426dc1, type: 2}
-  - {fileID: 9100000, guid: 2f1c435e05d0679468f2d731bff668fc, type: 2}
   - {fileID: 9100000, guid: aac4e3e64eb41a24b98771ca69473489, type: 2}
-  ik: {fileID: 1587092877}
+  - {fileID: 9100000, guid: 2f1c435e05d0679468f2d731bff668fc, type: 2}
 --- !u!54 &1587092874
 Rigidbody:
   m_ObjectHideFlags: 0
