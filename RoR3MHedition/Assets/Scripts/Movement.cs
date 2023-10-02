@@ -34,7 +34,8 @@ public class Movement : MonoBehaviour {
 	
 	public LayerMask lm;
 	
-	Rigidbody rb;
+	[HideInInspector]
+	public Rigidbody rb;
 	[HideInInspector]
 	public Animator anim;
 	
@@ -126,7 +127,7 @@ public class Movement : MonoBehaviour {
 			canMove = true;
 			gravity_Vector = new Vector3 (0, tot_Gravity, 0);
 			anim.SetFloat("CrawlSpeed", 0);
-			chargeLevel = Mathf.Clamp(chargeLevel-0.2f, 0, (float)(charge_Damages.Length-1));
+			chargeLevel = Mathf.Clamp(chargeLevel-0.2f, 0, (float)(charge_Damages.Length-2));
 		}
 //Check for Ground
 		RaycastHit hit;
@@ -210,7 +211,7 @@ public class Movement : MonoBehaviour {
 			if (rb.velocity.y < maxUp) {
 				maxUp = rb.velocity.y;
 			} else {
-				maxUp += (gravity_Vector.y*0.02f)*Globals.animationSpeed;
+				maxUp += (gravity_Vector.y*0.02f);
 			}
 			
 			rb.velocity = new Vector3(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -Mathf.Infinity, maxUp), rb.velocity.z);
@@ -337,15 +338,17 @@ public class Movement : MonoBehaviour {
 			//weaponTrail.material = trailMats[0];
 			
 			anim.SetBool("Trans", false);
-			if (anim.GetCurrentAnimatorStateInfo(0).IsTag("LightAttack") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Air")) {
-				a1=0;
-			}
-			if (anim.GetCurrentAnimatorStateInfo(0).IsTag("HeavyAttack") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Air")) {
-				a2=0;
-			}
-			if (anim.GetCurrentAnimatorStateInfo(0).IsTag("Jump") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Air")) {
-				a1=0;
-				a2=0;
+				if (!anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Air")) {
+				if (anim.GetCurrentAnimatorStateInfo(0).IsTag("LightAttack")) {
+					a1=0;
+				}
+				if (anim.GetCurrentAnimatorStateInfo(0).IsTag("HeavyAttack")) {
+					a2=0;
+				}
+				if (anim.GetCurrentAnimatorStateInfo(0).IsTag("Jump") || anim.GetCurrentAnimatorStateInfo(0).IsTag("Attack")) {
+					a1=0;
+					a2=0;
+				}
 			}
 		}
 		if (a1 > 0) {

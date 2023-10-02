@@ -11,11 +11,12 @@ public class MoveCancel : MonoBehaviour {
 	}
 	
 	void cancelMove () {
-		m.canMove = true;
+			m.canMove = true;
 	}
 	
 	void restartMove () {
 		m.a1 = 0;
+		m.a2 = 0;
 		m.canMove = false;
 	}
 	
@@ -52,6 +53,10 @@ public class MoveCancel : MonoBehaviour {
 	}
 	
 	void Charge (int level) {
-		m.chargeLevel = Mathf.Clamp(m.chargeLevel+level, 0, (float)m.charge_Damages.Length-1);
+		m.chargeLevel = Mathf.Clamp(m.chargeLevel+level, 0, (float)m.charge_Damages.Length-2);
+	}
+	
+	void MakeHeavy (int mass) {
+		m.rb.mass = mass;
 	}
 }
